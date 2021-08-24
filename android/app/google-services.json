@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "984345241096",
+    "project_id": "highgramfirebase",
+    "storage_bucket": "highgramfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984345241096:android:839b2ddd61089b136153bd",
+        "android_client_info": {
+          "package_name": "com.teimceper.highgram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984345241096-nvrhb3h6v69ac87l2lmvl82s9bgalb3q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teimceper.highgram",
+            "certificate_hash": "3050549c7166266cdd09ae64eedf18dab4c97710"
+          }
+        },
+        {
+          "client_id": "984345241096-r521f6si7acobpurrm2mbk2pgcmh0tvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnh6-rYjCO-nz4W5wU3Tq9h91FNO-ifk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984345241096-r521f6si7acobpurrm2mbk2pgcmh0tvi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
