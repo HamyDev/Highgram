@@ -486,7 +486,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                             _postcode.toUpperCase()),
                                   },
                                 HelperFunctions.saveUserNameSharedPreference(
-                                    _firstName, _lastName),
+                                    "$_firstName $_lastName"),
                                 _databaseMethods.uploadUserInfo(userInfoMap),
                                 HelperFunctions
                                     .saveUserLoggedInSharedPreference(true)

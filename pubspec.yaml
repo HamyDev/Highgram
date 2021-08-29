@@ -60,6 +60,9 @@ flutter:
     - family: Raleway
       fonts:
         - asset: assets/Fonts/Raleway-Regular.ttf
+    - family: TTCommon
+      fonts:
+        - asset: assets/Fonts/TTCommons-Regular.ttf
         
 
   assets: 
@@ -67,6 +70,8 @@ flutter:
       - 'assets/images/google.png'
       - 'assets/images/facebook.png'
       - 'assets/images/waypoint.png'
+      - 'assets/images/background.png'
+      - 'assets/images/HighGramRound.png'
 
   # To add assets to your application, add an assets section, like this:
   # assets:

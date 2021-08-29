@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:highgram/models/constants.dart';
-import 'package:highgram/screens/home/home.dart';
+import 'package:highgram/screens/auth/login.dart';
 import 'package:highgram/screens/main/other/sub/personalSettings.dart';
 import 'package:highgram/services/auth.service.dart';
 
@@ -252,7 +252,7 @@ class _ProfileState extends State<Profile> {
                 onPressed: () {
                   _auth.logout();
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Home()));
+                      MaterialPageRoute(builder: (context) => Login()));
                 },
               ),
             ),

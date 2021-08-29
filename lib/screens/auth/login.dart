@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:highgram/models/constants.dart';
+import 'package:highgram/screens/auth/register.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:highgram/services/database.service.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
-import 'package:highgram/screens/main/home.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -30,17 +30,64 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF090E45),
+          //image: DecorationImage(
+          //  image: AssetImage("assets/images/background.png"),
+          //  fit: BoxFit.cover,
+          //),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: const FractionalOffset(0.5, 1),
+            colors: [
+              Color(0xFF090E45),
+              Color(0xFF090A11),
+            ],
+          ),
+        ),
         child: Form(
             key: _formKey,
             child: SingleChildScrollView(
               child: Wrap(
                 children: [
+                  //App
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 100),
+                      child: Column(
+                        children: [
+                          // Image
+                          Container(
+                            width: 76,
+                            height: 76,
+                            child:
+                                Image.asset("assets/images/HighGramRound.png"),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(top: 24),
+                            child: Text(
+                              "Sign In to Highgram",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "TTCommon"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
                   //Email Input
                   Container(
+                    margin: EdgeInsets.only(top: 55),
                     padding: EdgeInsets.only(
-                        top: 20, bottom: 20, left: 30, right: 30),
+                        top: 20, bottom: 0, left: 30, right: 30),
                     child: TextFormField(
-                      cursorColor: Colors.red.shade900,
+                      style: TextStyle(color: Colors.white),
+                      cursorColor: Colors.yellow,
                       decoration: emailInputDecoration,
                       onChanged: (val) {
                         setState(() => _email = val);
@@ -52,7 +99,8 @@ class _LoginState extends State<Login> {
                   Container(
                     padding: EdgeInsets.only(left: 30, right: 30, top: 20),
                     child: TextFormField(
-                      cursorColor: Colors.red.shade900,
+                      style: TextStyle(color: Colors.white),
+                      cursorColor: Colors.yellow,
                       obscureText: _obscureText,
                       onChanged: (val) {
                         setState(() => _password = val);
@@ -81,131 +129,215 @@ class _LoginState extends State<Login> {
                     ),
                   ),
 
-                  //Forgot Password
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                    child: RichText(
-                        text: TextSpan(children: <TextSpan>[
-                      TextSpan(
-                          text: "Forgot Password?",
-                          style: TextStyle(
-                              color: Colors.blue.shade800,
-                              decoration: TextDecoration.underline),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              print("Forgot Password pressed");
-                            })
-                    ])),
-                  ),
-
-                  //facebook sign up button
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.5 - 177,
-                        bottom: 10,
-                        top: 40),
+                  //Login Button
+                  Center(
                     child: Container(
+                      margin: EdgeInsets.only(
+                        top: 28,
+                        //bottom: MediaQuery.of(context).size.height - 562,
+                      ),
+                      width: 270,
+                      height: 50,
                       decoration: BoxDecoration(
-                        border:
-                            Border.all(width: 1, color: Colors.grey.shade600),
-                        borderRadius: BorderRadius.circular(5.0),
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Color(0xFF5FD0FF), Color(0xFF2880FF)]),
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: MaterialButton(
-                        minWidth: 353,
-                        height: 60,
-                        child: Wrap(
-                          children: [
-                            Container(
-                                width: 25,
-                                margin: EdgeInsets.only(top: 3),
-                                child:
-                                    Image.asset("assets/images/facebook.png")),
-                            Container(
-                                margin: EdgeInsets.only(
-                                    top: 7, left: 20, right: 105),
-                                child: Text("Sign in with Facebook",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center)),
-                            Container(
-                                margin: EdgeInsets.only(top: 2),
-                                child: Icon(Icons.arrow_forward_ios))
-                          ],
+                        child: Text(
+                          "Log In",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "TTCommon",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17,
+                          ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            setState(() => loading = true);
+
+                            _databaseMethods
+                                .getUserbyUserEmail(_email)
+                                .then((val) => {
+                                      snapshotUserInfo = val,
+                                    });
+                            // HelperFunctions.saveUserNameSharedPreference(username);
+                            dynamic result = await _auth
+                                .signInWithEmailAndPassword(_email, _password);
+                            HelperFunctions.saveUserLoggedInSharedPreference(
+                                true);
+                            if (result == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                            "Please double check the input fields."),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              setState(() => loading = false);
+                              Navigator.pop(context);
+                            }
+                          }
+                        },
                       ),
                     ),
+                  ),
+
+                  //Or
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Row(children: <Widget>[
+                      Expanded(
+                        child: new Container(
+                            margin:
+                                const EdgeInsets.only(left: 130.0, right: 10.0),
+                            child: Divider(
+                              color: Colors.grey[500],
+                              height: 36,
+                            )),
+                      ),
+                      Text(
+                        "or",
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontFamily: "TTCommon",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Expanded(
+                        child: new Container(
+                            margin:
+                                const EdgeInsets.only(left: 10.0, right: 130.0),
+                            child: Divider(
+                              color: Colors.grey[500],
+                              height: 36,
+                            )),
+                      ),
+                    ]),
                   ),
 
                   //google sign up button
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.5 - 177,
-                        top: 10),
+                  Center(
                     child: Container(
+                      margin: EdgeInsets.only(
+                        top: 10,
+                      ),
+                      width: 270,
+                      height: 50,
                       decoration: BoxDecoration(
-                        border:
-                            Border.all(width: 1, color: Colors.grey.shade600),
-                        borderRadius: BorderRadius.circular(5.0),
+                        color: Color(0xFF141A57),
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: MaterialButton(
-                        minWidth: 353,
-                        height: 60,
-                        child: Wrap(
+                        elevation: 1,
+                        child: Row(
                           children: [
                             Container(
-                                width: 25,
-                                margin: EdgeInsets.only(top: 5),
-                                child: Image.asset("assets/images/google.png")),
+                              width: 34,
+                              height: 34,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF222761),
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              child: Center(
+                                child: Container(
+                                  width: 20,
+                                  child:
+                                      Image.asset("assets/images/google.png"),
+                                ),
+                              ),
+                            ),
                             Container(
-                                margin: EdgeInsets.only(
-                                    top: 9, left: 20, right: 115),
-                                child: Text("Sign in with Google",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center)),
-                            Container(
-                                margin: EdgeInsets.only(top: 4),
-                                child: Icon(Icons.arrow_forward_ios))
+                              margin: EdgeInsets.only(left: 29),
+                              child: Text(
+                                "Continue with Google",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          dynamic result = _auth.loginGoogle();
+                          print("$result result");
+                          if (result == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text("Please try again later."),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),
 
-                  //TOS agreement
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                    child: RichText(
-                        text: TextSpan(children: [
-                      TextSpan(
-                          text: "By logging in, I agree with McDonald's \n",
+                  //Dont have an account, sign up.
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          left: 20, top: 60, right: 20, bottom: 85.5),
+                      child: RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                          text: "Don't have an Account? ",
                           style: TextStyle(
-                              color: Colors.grey.shade500, fontSize: 13)),
-                      TextSpan(
-                        text: "Terms & Conditions",
-                        style: TextStyle(
-                            color: Colors.blue.shade800,
-                            decoration: TextDecoration.underline,
-                            fontSize: 13),
-                      ),
-                      TextSpan(
-                        text: " ",
-                      ),
-                      TextSpan(
-                        text: "Privacy Statement.",
-                        style: TextStyle(
-                            color: Colors.blue.shade800,
-                            decoration: TextDecoration.underline,
-                            fontSize: 13),
-                      ),
-                    ])),
+                            color: Colors.grey.shade600,
+                            fontFamily: "TTCommon",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => Register(),
+                                      ),
+                                    )
+                                  },
+                            text: "Sign Up",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "TTCommon",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                            )),
+                      ])),
+                    ),
                   ),
+                ],
+              ),
+            )),
+      ),
+    );
+  }
+}
 
-                  Container(
+/*
+Container(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.1 - 29),
+                        top: MediaQuery.of(context).size.height * 0.03),
                     child: MaterialButton(
                       elevation: 0,
                       height: 65,
@@ -249,11 +381,4 @@ class _LoginState extends State<Login> {
                         style: TextStyle(fontSize: 18, fontFamily: "Raleway"),
                       ),
                     ),
-                  )
-                ],
-              ),
-            )),
-      ),
-    );
-  }
-}
+                  ) */

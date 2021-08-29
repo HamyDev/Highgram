@@ -25,7 +25,7 @@ class _MainWrapperState extends State<MainWrapper> {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(55), child: globalNavBar()),
-      body: Center(
+      body: Container(
         child: _options.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(

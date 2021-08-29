@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 var emailInputDecoration = InputDecoration(
-    labelText: 'Email',
+    labelText: 'Enter your email or phone number here',
     labelStyle: TextStyle(color: Colors.grey.shade600),
     focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.grey.shade400)),

@@ -15,11 +15,9 @@ class HelperFunctions {
         sharedPreferencesUserLoggedInkey, isUserLoggedIn);
   }
 
-  static Future<bool> saveUserNameSharedPreference(
-      String firstName, String lastName) async {
-    final fullName = "$firstName $lastName";
+  static Future<bool> saveUserNameSharedPreference(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setString(sharedPreferenceUserNameKey, fullName);
+    return await prefs.setString(sharedPreferenceUserNameKey, name);
   }
 
   static Future<bool> saveUserEmailSharedPreference(String userEmail) async {
