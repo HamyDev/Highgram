@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:highgram/models/constants.dart';
+import 'package:highgram/models/models/user.dart';
 import 'package:highgram/screens/auth/login.dart';
-import 'package:highgram/screens/main/Mainwrapper.dart';
+import 'package:highgram/screens/main/home.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:highgram/services/database.service.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -193,7 +195,8 @@ class _RegisterState extends State<Register> {
                             Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MainWrapper()));
+                              builder: (context) => MainPage(),
+                            ));
                           }
                         },
                       ),
@@ -306,7 +309,7 @@ class _RegisterState extends State<Register> {
                       child: RichText(
                           text: TextSpan(children: [
                         TextSpan(
-                          text: "Don't have an Account? ",
+                          text: "Already have an Account? ",
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontFamily: "TTCommon",

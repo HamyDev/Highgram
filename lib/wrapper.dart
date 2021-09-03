@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:highgram/screens/auth/login.dart';
-import 'package:highgram/screens/main/Mainwrapper.dart';
+import 'package:highgram/screens/main/home.dart';
 import 'package:provider/provider.dart';
 import 'package:highgram/models/models/user.dart';
 
@@ -15,7 +15,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return Login();
     } else {
-      return MainWrapper();
+      return MainPage();
     }
   }
 }

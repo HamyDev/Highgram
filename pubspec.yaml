@@ -68,10 +68,15 @@ flutter:
   assets: 
       - 'assets/images/mcdonalds.png'
       - 'assets/images/google.png'
-      - 'assets/images/facebook.png'
       - 'assets/images/waypoint.png'
       - 'assets/images/background.png'
       - 'assets/images/HighGramRound.png'
+      - 'assets/images/PlayBtn.png'
+      - 'assets/images/AffiliateBtn.png'
+      - 'assets/images/Space.png'
+      - 'assets/images/USA.png'
+      - 'assets/images/AffiliateBackground.png'
+      - 'assets/images/TextBox.png'
 
   # To add assets to your application, add an assets section, like this:
   # assets:

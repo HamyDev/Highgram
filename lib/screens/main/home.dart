@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:highgram/screens/main/affiliate.dart';
 import 'package:highgram/screens/main/order.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -10,314 +12,194 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final _Spacer = Container(
-    width: 5,
-  );
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Wrap(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.png"),
+            fit: BoxFit.cover,
+          ),
+          //gradient: LinearGradient(
+          //  begin: Alignment.topCenter,
+          //  end: const FractionalOffset(0.5, 1),
+          //  colors: [
+          //    Color(0xFF090E45),
+          //    Color(0xFFFFFFFF),
+          //  ],
+          //),
+        ),
+        child: Column(
           children: [
             Container(
-              height: 185,
-              //width: MediaQuery.of(context).size.width,
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.amber,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(3),
-                      ),
-                      color: Colors.amber),
-                  margin: EdgeInsets.only(bottom: 25, left: 30),
-                  width: 160,
-                  height: 40,
-                  child: Center(
-                    child: Text(
-                      "Order now",
-                      style: TextStyle(
-                          color: Colors.black,
-                          //fontFamily: "Raleway",
-                          fontSize: 13),
+              margin: EdgeInsets.only(top: 56),
+              width: 76,
+              height: 76,
+              child: Image.asset("assets/images/HighGramRound.png"),
+            ),
+            GestureDetector(
+              child: Container(
+                margin: EdgeInsets.only(top: 28),
+                width: 336,
+                height: 95,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/PlayBtn.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Play",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "TTCommon",
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ),
+              onTap: () {
+                print("You pressed da button!");
+              },
             ),
-            Container(
-              child: Divider(
-                height: 0,
-                thickness: 1,
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 20, bottom: 30, right: 20),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Row(
-                  children: [
-                    Text(
-                      "Menu",
-                      style: TextStyle(
-                          fontFamily: "Raleway",
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
+            GestureDetector(
+              child: Container(
+                margin: EdgeInsets.only(top: 24),
+                width: 336,
+                height: 95,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/AffiliateBtn.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Affiliate",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "TTCommon",
+                      color: Colors.white,
                     ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.564),
-                          child: Text(
-                            "Full menu",
-                            style: TextStyle(
-                                color: Colors.blue.shade600,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13),
-                          ),
-                        ),
-                        Icon(Icons.arrow_forward,
-                            color: Colors.blue.shade600, size: 17)
+                  ),
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Affiliate(),
+                  ),
+                );
+              },
+            ),
+            Center(
+              child: GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.only(top: 45, bottom: 61),
+                  width: 270,
+                  height: 51,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(69),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFF5157F4),
+                        Color(0xFF2A30CE),
                       ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              height: 200.0,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Container(
-                    width: 160.0,
-                    color: Colors.red,
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text("Burgers"),
-                    ),
                   ),
-                  _Spacer,
-                  Container(
-                    width: 160.0,
-                    color: Colors.blue,
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text("Fries & Sides"),
-                    ),
-                  ),
-                  _Spacer,
-                  Container(
-                    width: 160.0,
-                    color: Colors.green,
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text("McCafe® Hot Drinks"),
-                    ),
-                  ),
-                  _Spacer,
-                  Container(
-                    width: 160.0,
-                    color: Colors.yellow,
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text("McFlurry® /Ice Cream"),
-                    ),
-                  ),
-                  _Spacer,
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Order()));
-                    },
-                    child: Container(
-                      width: 160.0,
-                      color: Colors.green,
-                      child: Center(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 50),
-                          child: Wrap(
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      "Full menu",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Icon(Icons.arrow_forward),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                  child: Center(
+                    child: Text(
+                      "Leaderboards",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "TTCommon",
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  _Spacer,
+                ),
+                onTap: () {},
+              ),
+            ),
+            //Background of buttons
+            Container(
+              alignment: Alignment.bottomCenter,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height - 534,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(200),
+                  topRight: Radius.circular(200),
+                ),
+                color: Color(0xFF353B7E).withOpacity(0.14),
+              ),
+              child: Column(
+                children: [
+                  //Buttons
+                  Center(
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 40, right: 83, top: 34),
+                          width: 54,
+                          height: 54,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF10175E),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
+                          ),
+                          child: Icon(Icons.volume_up_sharp,
+                              color: Colors.white, size: 25),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 65, bottom: 30),
+                          width: 54,
+                          height: 54,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF10175E),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
+                          ),
+                          child: Image.asset("assets/images/USA.png"),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 34),
+                          width: 54,
+                          height: 54,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF10175E),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
+                          ),
+                          child: Icon(FontAwesome.bullhorn,
+                              color: Colors.white, size: 25),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 15),
+                    alignment: Alignment.bottomCenter,
+                    width: 343,
+                    height: 86,
+                    child: Image.asset("assets/images/Space.png"),
+                  ),
                 ],
               ),
             ),
-            //Container(
-            //  height: 100,
-            //  child: MaterialButton(
-            //    child: Row(
-            //      children: [
-            //        Container(
-            //          child: Icon(
-            //            FontAwesome.lock,
-            //            color: Colors.grey[500],
-            //          ),
-            //        ),
-            //        Container(
-            //          padding: EdgeInsets.only(left: 20),
-            //          child: Text(
-            //            "Privacy Settings",
-            //            style: TextStyle(
-            //              fontFamily: "Raleway",
-            //              fontSize: 17,
-            //              color: Colors.black,
-            //            ),
-            //          ),
-            //        ),
-            //        Container(
-            //          padding: EdgeInsets.only(left: 155),
-            //          child: Transform.scale(
-            //            scale: 0.6,
-            //            child: Icon(Icons.arrow_forward_ios,
-            //                color: Colors.grey[700]),
-            //          ),
-            //        ),
-            //      ],
-            //    ),
-            //    onPressed: () {},
-            //  ),
-            //),
-            //Container(
-            //  child: Divider(
-            //    height: 0,
-            //    thickness: 1,
-            //  ),
-            //),
-            //Container(
-            //  height: 100,
-            //  child: MaterialButton(
-            //    child: Row(
-            //      children: [
-            //        Container(
-            //          child: Icon(
-            //            FontAwesome.credit_card,
-            //            color: Colors.grey[500],
-            //          ),
-            //        ),
-            //        Container(
-            //          padding: EdgeInsets.only(left: 20),
-            //          child: Text(
-            //            "Payment Methods",
-            //            style: TextStyle(
-            //              fontFamily: "Raleway",
-            //              fontSize: 17,
-            //              color: Colors.black,
-            //            ),
-            //          ),
-            //        ),
-            //        Container(
-            //          padding: EdgeInsets.only(left: 135),
-            //          child: Transform.scale(
-            //            scale: 0.6,
-            //            child: Icon(Icons.arrow_forward_ios,
-            //                color: Colors.grey[700]),
-            //          ),
-            //        ),
-            //      ],
-            //    ),
-            //    onPressed: () {},
-            //  ),
-            //),
-            ////Communications
-            //Container(
-            //  child: Divider(
-            //    height: 0,
-            //    thickness: 1,
-            //  ),
-            //),
-            //Container(
-            //  height: 100,
-            //  child: MaterialButton(
-            //    child: Row(
-            //      children: [
-            //        Container(
-            //          child: Icon(
-            //            FontAwesome.comment_o,
-            //            color: Colors.grey[500],
-            //          ),
-            //        ),
-            //        Container(
-            //          padding: EdgeInsets.only(left: 20),
-            //          child: Text(
-            //            "Communications",
-            //            style: TextStyle(
-            //              fontFamily: "Raleway",
-            //              fontSize: 17,
-            //              color: Colors.black,
-            //            ),
-            //          ),
-            //        ),
-            //        Container(
-            //          padding: EdgeInsets.only(left: 145),
-            //          child: Transform.scale(
-            //            scale: 0.6,
-            //            child: Icon(Icons.arrow_forward_ios,
-            //                color: Colors.grey[700]),
-            //          ),
-            //        ),
-            //      ],
-            //    ),
-            //    onPressed: () {},
-            //  ),
-            //),
-            ////Log out
-            //Container(
-            //  child: Divider(
-            //    height: 0,
-            //    thickness: 1,
-            //  ),
-            //),
-            //Container(
-            //  margin: EdgeInsets.only(top: 20),
-            //  decoration: BoxDecoration(
-            //    gradient: LinearGradient(
-            //      colors: [Color(0xFFad0b00), Color(0xFFfc5347)],
-            //      begin: Alignment.bottomCenter,
-            //      end: Alignment.topCenter,
-            //    ),
-            //  ),
-            //  child: MaterialButton(
-            //    minWidth: MediaQuery.of(context).size.width * 0.85,
-            //    child: Text(
-            //      "Log Out",
-            //      style: TextStyle(
-            //        fontFamily: "Raleway",
-            //        fontSize: 17,
-            //        color: Colors.white,
-            //      ),
-            //    ),
-            //    onPressed: () {},
-            //  ),
-            //),
           ],
         ),
       ),
