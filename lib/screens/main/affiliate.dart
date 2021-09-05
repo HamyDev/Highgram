@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:highgram/models/constants.dart';
+import 'package:highgram/screens/main/Pages/HowItWorks.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
@@ -31,10 +32,12 @@ class _MainPageState extends State<Affiliate> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: const FractionalOffset(0.5, 0.14),
-                colors: [Color(0xFF1222ac), Color(0xFF090e45)])),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: const FractionalOffset(0.5, 0.14),
+            colors: [Color(0xFF1222ac), Color(0xFF090e45)],
+          ),
+        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -105,25 +108,28 @@ class _MainPageState extends State<Affiliate> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 26),
-                padding: EdgeInsets.only(top: 22, left: 19, right: 19),
-                width: 248,
-                height: 89,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/TextBox.png"),
+              Center(
+                child: Container(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  margin: EdgeInsets.only(top: 26),
+                  padding: EdgeInsets.only(top: 22),
+                  width: 248,
+                  height: 89,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/TextBox.png"),
+                    ),
                   ),
-                ),
-                child: Text(
-                  "Show your followers this code. Your Affiliate Code",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 17,
-                    fontFamily: "TTCommon",
+                  child: Text(
+                    "Show your followers this code. Your Affiliate Code",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                      fontFamily: "TTCommon",
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
               Container(
@@ -185,6 +191,90 @@ class _MainPageState extends State<Affiliate> {
                   ],
                 ),
               ),
+
+              //Buttons
+              Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 48),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //Statistics
+                      GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xFFF96029),
+                                  Color(0xFFFc7F52),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(69)),
+                          width: 146,
+                          height: 51,
+                          child: Center(
+                            child: Text(
+                              "Statistics",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17,
+                                fontFamily: "TTCommon",
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //How it works
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 18),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xFF5157F4),
+                                  Color(0xFF2A30CE),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(69)),
+                          width: 146,
+                          height: 51,
+                          child: Center(
+                            child: Text(
+                              "How it works",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17,
+                                fontFamily: "TTCommon",
+                              ),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => HowItWorks(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              //Space Widget
+              Container(
+                margin: EdgeInsets.only(top: 49),
+                width: 343,
+                height: 137,
+                child: Image.asset("assets/images/Space2.png"),
+              )
             ],
           ),
         ),
