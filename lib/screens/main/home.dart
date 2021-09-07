@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:highgram/screens/main/affiliate.dart';
-import 'package:highgram/screens/main/order.dart';
+import 'package:highgram/screens/main/categories.dart';
+import 'package:highgram/screens/main/leaderboard.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:simple_icons/simple_icons.dart';
@@ -63,7 +64,11 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               onTap: () {
-                print("You pressed da button!");
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Categories(),
+                  ),
+                );
               },
             ),
             GestureDetector(
@@ -128,7 +133,13 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Leaderboard(),
+                    ),
+                  );
+                },
               ),
             ),
             //Background of buttons
@@ -174,18 +185,23 @@ class _MainPageState extends State<MainPage> {
                           ),
                           child: Image.asset("assets/images/USA.png"),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 34),
-                          width: 54,
-                          height: 54,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF10175E),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(100),
+                        GestureDetector(
+                          child: Container(
+                            margin: EdgeInsets.only(top: 34),
+                            width: 54,
+                            height: 54,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF10175E),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(100),
+                              ),
                             ),
+                            child: Icon(FontAwesome.video_camera,
+                                color: Colors.white, size: 25),
                           ),
-                          child: Icon(FontAwesome.bullhorn,
-                              color: Colors.white, size: 25),
+                          onTap: () {
+                            _auth.logout();
+                          },
                         ),
                       ],
                     ),

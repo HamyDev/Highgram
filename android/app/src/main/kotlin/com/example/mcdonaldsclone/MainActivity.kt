@@ -1,4 +1,4 @@
-package com.example.highgram
+package com.teimceper.highgram
 
 import io.flutter.embedding.android.FlutterActivity
 

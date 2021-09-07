@@ -42,8 +42,10 @@ class AuthService {
       HelperFunctions.saveUserEmailSharedPreference(result.user.email);
       HelperFunctions.saveUserNameSharedPreference(name);
 
-      Map<String, String> userInfoMap = {
+      Map<dynamic, dynamic> userInfoMap = {
         "name": name,
+        "id": name,
+        "highscore": 0,
         "email": result.user.email
       };
 
@@ -70,14 +72,31 @@ class AuthService {
   }
 
   // register with email & password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password,
+      String affiliate, String name, String id) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+
+      var username = name;
+      var userid = id;
+
+      HelperFunctions.saveUserEmailSharedPreference(result.user.email);
+      HelperFunctions.saveUserNameSharedPreference(username);
+
+      Map<String, dynamic> userInfoMap = {
+        "name": username,
+        "id": userid,
+        "highscore": 0,
+        "email": result.user.email
+      };
+
+      _databaseMethods.uploadUserInfo(userInfoMap);
+      HelperFunctions.saveUserLoggedInSharedPreference(true);
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
-      print(e.toString());
+      print("${e.toString()} - ERROR");
       return null;
     }
   }

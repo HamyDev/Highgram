@@ -26,6 +26,8 @@ class _RegisterState extends State<Register> {
   String _password;
   String _email;
   String _affilateCode;
+  String _username;
+  String _id;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +80,31 @@ class _RegisterState extends State<Register> {
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                  //username Input
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 20, bottom: 0, left: 30, right: 30),
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      cursorColor: Colors.yellow,
+                      decoration: InputDecoration(
+                        labelText: 'Enter a username',
+                        labelStyle: TextStyle(color: Colors.grey.shade600),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
+                        contentPadding: EdgeInsets.all(0),
+                      ),
+                      onChanged: (val) {
+                        setState(() => {
+                              _username = val,
+                              _id = val.contains(" ")
+                                  ? val.replaceAll(" ", "_").toLowerCase()
+                                  : val.toLowerCase()
+                            });
+                      },
                     ),
                   ),
 
@@ -174,26 +201,12 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         onPressed: () async {
-                          Map<String, String> userInfoMap;
-                          dynamic result = await _auth
-                              .registerWithEmailAndPassword(_email, _password)
-                              .then((val) => {
-                                    Map,
-                                    userInfoMap = {
-                                      "email": _email,
-                                      "password": _password
-                                    },
-                                    HelperFunctions
-                                        .saveUserEmailSharedPreference(_email),
-                                    _databaseMethods
-                                        .uploadUserInfo(userInfoMap),
-                                    HelperFunctions
-                                        .saveUserLoggedInSharedPreference(true)
-                                  });
-                          if (result.toString().contains(
-                              "{email: $_email, password: $_password}")) {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                          Map<dynamic, dynamic> userInfoMap;
+                          dynamic result =
+                              await _auth.registerWithEmailAndPassword(_email,
+                                  _password, _affilateCode, _username, _id);
+                          print("$result - RESULT");
+                          if (result != null) {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => MainPage(),
                             ));

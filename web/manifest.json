@@ -1,6 +1,6 @@
 {
-    "name": "highgram",
-    "short_name": "highgram",
+    "name": "HighGram",
+    "short_name": "HighGram",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

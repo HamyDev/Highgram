@@ -5,6 +5,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:highgram/models/constants.dart';
 import 'package:highgram/screens/auth/register.dart';
+import 'package:highgram/screens/main/home.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:highgram/services/database.service.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
@@ -184,7 +185,11 @@ class _LoginState extends State<Login> {
                               );
                             } else {
                               setState(() => loading = false);
-                              Navigator.pop(context);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => MainPage(),
+                                ),
+                              );
                             }
                           }
                         },
@@ -295,7 +300,11 @@ class _LoginState extends State<Login> {
                   Center(
                     child: Container(
                       margin: EdgeInsets.only(
-                          left: 20, top: 60, right: 20, bottom: 85.5),
+                          left: 20,
+                          top: 60,
+                          right: 20,
+                          bottom:
+                              MediaQuery.of(context).size.height / 10 + 6.3),
                       child: RichText(
                           text: TextSpan(children: [
                         TextSpan(

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:highgram/models/constants.dart';
 import 'package:highgram/screens/main/Pages/HowItWorks.dart';
+import 'package:highgram/screens/main/pages/Statistics.dart';
 import 'package:highgram/services/auth.service.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
 import 'package:flutter/services.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class Affiliate extends StatefulWidget {
   @override
@@ -226,6 +227,13 @@ class _MainPageState extends State<Affiliate> {
                             ),
                           ),
                         ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => AffiliateStatistics(),
+                            ),
+                          );
+                        },
                       ),
                       //How it works
                       GestureDetector(
