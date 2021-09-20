@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:highgram/models/constants.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:highgram/services/database.service.dart';
@@ -31,10 +32,6 @@ class _MainPageState extends State<Leaderboard> {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
   }
 
-  setRank(int i) {
-    setState(() => currentRank = i + 1);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +55,7 @@ class _MainPageState extends State<Leaderboard> {
                     Container(
                       margin: EdgeInsets.only(
                           left: 24.5,
-                          right: MediaQuery.of(context).size.width / 2 - 95.5,
+                          right: MediaQuery.of(context).size.width / 2 - 96,
                           top: 30),
                       child: GestureDetector(
                           child: Icon(
@@ -93,7 +90,7 @@ class _MainPageState extends State<Leaderboard> {
                     Container(
                       margin: EdgeInsets.only(
                           top: 18,
-                          bottom: MediaQuery.of(context).size.height / 6 + 5.5),
+                          bottom: MediaQuery.of(context).size.height / 6 + 7),
                       width: 343,
                       height: 553,
                       decoration: BoxDecoration(
@@ -191,12 +188,25 @@ class _MainPageState extends State<Leaderboard> {
                                           fontSize: 12),
                                     ),
                                   ),
-                                  Text(
-                                    "#$currentRank",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  )
+                                  FutureBuilder(
+                                      future: _databaseMethods.GetUserRank(
+                                          Constants.myName),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.done) {
+                                          return Text(
+                                            "#${snapshot.data}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          );
+                                        } else {
+                                          return SpinKitDualRing(
+                                            color: Colors.white,
+                                            size: 10.0,
+                                          );
+                                        }
+                                      })
                                 ],
                               ),
                             ),
@@ -221,8 +231,6 @@ class _MainPageState extends State<Leaderboard> {
           for (var i = 0; i < val.documents.length; i++)
             {
               userOnLeaderBoard.add(val.documents[i].data),
-              if (val.documents[i].data["name"] == Constants.myName)
-                {print("name correct"), setState(() => currentRank = i + 1)}
             },
         },
       ),
@@ -278,11 +286,14 @@ class _MainPageState extends State<Leaderboard> {
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: Text(
-                          "${userOnLeaderBoard.toList()[i]["name"]}",
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 100),
+                        child: Container(
+                          margin: EdgeInsets.only(left: 5),
+                          child: Text(
+                            "${userOnLeaderBoard.toList()[i]["name"]}",
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
                         ),
                       ),
                     ],

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:highgram/models/constants.dart';
 import 'package:highgram/screens/main/affiliate.dart';
 import 'package:highgram/screens/main/categories.dart';
 import 'package:highgram/screens/main/leaderboard.dart';
 import 'package:highgram/services/auth.service.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:simple_icons/simple_icons.dart';
+import 'package:highgram/services/helper/helper.functions.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -14,6 +15,16 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final AuthService _auth = AuthService();
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
+  Future getUserInfo() async {
+    Constants.email = await HelperFunctions.getUserEmailSharedPreference();
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,8 +144,8 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
+                onTap: () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => Leaderboard(),
                     ),
@@ -160,18 +171,22 @@ class _MainPageState extends State<MainPage> {
                   Center(
                     child: Row(
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 83, top: 34),
-                          width: 54,
-                          height: 54,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF10175E),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(100),
+                        GestureDetector(
+                          child: Container(
+                            margin:
+                                EdgeInsets.only(left: 40, right: 83, top: 34),
+                            width: 54,
+                            height: 54,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF10175E),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(100),
+                              ),
                             ),
+                            child: Icon(Icons.volume_up_sharp,
+                                color: Colors.white, size: 25),
                           ),
-                          child: Icon(Icons.volume_up_sharp,
-                              color: Colors.white, size: 25),
+                          onTap: () async {},
                         ),
                         Container(
                           margin: EdgeInsets.only(right: 65, bottom: 30),

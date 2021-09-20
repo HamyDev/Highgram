@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:highgram/models/constants.dart';
 import 'package:highgram/services/auth.service.dart';
-import 'package:highgram/services/helper/helper.functions.dart';
 
 class AffiliateWithdraw extends StatefulWidget {
   @override
@@ -310,7 +309,7 @@ class _MainPageState extends State<AffiliateWithdraw> {
                       margin: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width / 2 - 133,
                           top: 15,
-                          bottom: MediaQuery.of(context).size.height / 9 + 4),
+                          bottom: MediaQuery.of(context).size.height / 9 + 20),
                       child: Row(
                         children: [
                           Icon(

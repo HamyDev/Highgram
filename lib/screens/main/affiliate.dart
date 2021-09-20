@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:highgram/models/constants.dart';
 import 'package:highgram/screens/main/Pages/HowItWorks.dart';
 import 'package:highgram/screens/main/pages/Statistics.dart';
-import 'package:highgram/services/auth.service.dart';
+import 'package:highgram/services/database.service.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
 import 'package:flutter/services.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class Affiliate extends StatefulWidget {
   @override
@@ -13,16 +12,18 @@ class Affiliate extends StatefulWidget {
 }
 
 class _MainPageState extends State<Affiliate> {
-  final AuthService _auth = AuthService();
+  final DatabaseMethods _databaseMethods = DatabaseMethods();
   @override
   void initState() {
     getUserInfo();
     super.initState();
   }
 
-  String _AffiliateCode = "#AffiliateCode";
-
   ClipboardData data;
+
+  Future _affiliateCode() async {
+    return await _databaseMethods.GetUsersAffiliate(Constants.myName);
+  }
 
   Future getUserInfo() async {
     Constants.email = await HelperFunctions.getUserEmailSharedPreference();
@@ -144,16 +145,27 @@ class _MainPageState extends State<Affiliate> {
                 child: Row(
                   children: [
                     Container(
+                      width: 129,
                       margin: EdgeInsets.only(left: 26),
-                      child: Text(
-                        "$_AffiliateCode",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
+                      child: FutureBuilder(
+                          future: _affiliateCode(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Text(
+                                "${snapshot.data}",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              );
+                            } else {
+                              return Text("Loading...");
+                            }
+                          }),
                     ),
                     GestureDetector(
                       child: Container(
-                        margin: EdgeInsets.only(left: 26),
+                        //margin: EdgeInsets.only(left: 26),
                         width: 88,
                         height: 36,
                         decoration: BoxDecoration(
@@ -173,8 +185,9 @@ class _MainPageState extends State<Affiliate> {
                           ),
                         ),
                       ),
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: _AffiliateCode));
+                      onTap: () async {
+                        Clipboard.setData(
+                            ClipboardData(text: "${await _affiliateCode()}"));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Row(

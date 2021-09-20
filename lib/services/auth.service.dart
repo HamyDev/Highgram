@@ -19,7 +19,12 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
-  Future<void> logout() => _auth.signOut();
+  logout() => {
+        HelperFunctions.saveUserNameSharedPreference(null),
+        HelperFunctions.saveUserEmailSharedPreference(null),
+        HelperFunctions.saveUserLoggedInSharedPreference(false),
+        _auth.signOut(),
+      };
 
   loginGoogle() async {
     try {
@@ -42,17 +47,37 @@ class AuthService {
       HelperFunctions.saveUserEmailSharedPreference(result.user.email);
       HelperFunctions.saveUserNameSharedPreference(name);
 
-      Map<dynamic, dynamic> userInfoMap = {
+      Map<String, dynamic> affiliateAnalytics = {
+        "mon": 0,
+        "tue": 0,
+        "wen": 0,
+        "thu": 0,
+        "fri": 0,
+        "sat": 0,
+        "sun": 0,
+      };
+
+      Map<String, dynamic> affiliateStatistics = {
+        "registered": 0,
+        "used": 0,
+        "adsShow": 0,
+        "analytics": affiliateAnalytics
+      };
+
+      Map<String, dynamic> userInfoMap = {
         "name": name,
         "id": name,
+        "affiliate": name,
         "highscore": 0,
-        "email": result.user.email
+        "balance": 0,
+        "email": result.user.email,
+        "affiliateStatistics": affiliateStatistics
       };
 
       _databaseMethods.uploadUserInfo(userInfoMap);
       HelperFunctions.saveUserLoggedInSharedPreference(true);
 
-      print('${name}');
+      print('$name');
     } catch (error) {
       print(error);
     }
@@ -75,6 +100,18 @@ class AuthService {
   Future registerWithEmailAndPassword(String email, String password,
       String affiliate, String name, String id) async {
     try {
+      if (!RegExp("^.{8,16}").hasMatch(password) ||
+          !RegExp("(?:[^a-z]*[A-Z])").hasMatch(password) ||
+          !RegExp(".*[0-9].*").hasMatch(password)) {
+        return throw "ERROR_WEAK_PASSWORD";
+      }
+
+      if (!RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(email)) {
+        return throw "ERROR_INVALID_EMAIL";
+      }
+
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
@@ -84,11 +121,31 @@ class AuthService {
       HelperFunctions.saveUserEmailSharedPreference(result.user.email);
       HelperFunctions.saveUserNameSharedPreference(username);
 
+      Map<String, dynamic> affiliateAnalytics = {
+        "mon": 0,
+        "tue": 0,
+        "wen": 0,
+        "thu": 0,
+        "fri": 0,
+        "sat": 0,
+        "sun": 0,
+      };
+
+      Map<String, dynamic> affiliateStatistics = {
+        "registered": 0,
+        "used": 0,
+        "adsShow": 0,
+        "analytics": affiliateAnalytics
+      };
+
       Map<String, dynamic> userInfoMap = {
         "name": username,
         "id": userid,
+        "affiliate": userid,
         "highscore": 0,
-        "email": result.user.email
+        "balance": 0,
+        "email": result.user.email,
+        "affiliateStatistics": affiliateStatistics
       };
 
       _databaseMethods.uploadUserInfo(userInfoMap);
@@ -97,6 +154,12 @@ class AuthService {
       return _userFromFirebaseUser(user);
     } catch (e) {
       print("${e.toString()} - ERROR");
+      if (e.toString().contains("ERROR_EMAIL_ALREADY_IN_USE")) {
+        return "ERROR_EMAIL_ALREADY_IN_USE";
+      }
+      if (e.toString().contains("ERROR_WEAK_PASSWORD")) {
+        return "ERROR_WEAK_PASSWORD";
+      }
       return null;
     }
   }

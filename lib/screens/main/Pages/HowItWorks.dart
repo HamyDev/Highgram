@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:highgram/models/constants.dart';
-import 'package:highgram/services/auth.service.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
 import 'package:flutter/services.dart';
 
@@ -10,7 +9,6 @@ class HowItWorks extends StatefulWidget {
 }
 
 class _MainPageState extends State<HowItWorks> {
-  final AuthService _auth = AuthService();
   @override
   void initState() {
     getUserInfo();

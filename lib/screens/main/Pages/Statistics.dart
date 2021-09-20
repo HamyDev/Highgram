@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:highgram/models/constants.dart';
 import 'package:highgram/screens/main/pages/Withdraw.dart';
-import 'package:highgram/services/auth.service.dart';
+import 'package:highgram/services/database.service.dart';
 import 'package:highgram/services/helper/helper.functions.dart';
 import 'package:intl/intl.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AffiliateStatistics extends StatefulWidget {
   @override
@@ -13,32 +13,36 @@ class AffiliateStatistics extends StatefulWidget {
 
 class _MainPageState extends State<AffiliateStatistics> {
   // ignore: unused_field
-  final AuthService _auth = AuthService();
+  final DatabaseMethods _databaseMethods = DatabaseMethods();
+  TooltipBehavior _tooltipBehavior;
   @override
   void initState() {
+    _tooltipBehavior = TooltipBehavior(enable: true);
     getUserInfo();
     super.initState();
   }
 
-  int NewRegistered = 746;
-  int UsedCode = 5432;
-  int AverageAds = 4531;
-  int Balance = 456;
-
-  List<FlSpot> graphData = [
-    FlSpot(0, 1),
-    FlSpot(1, 2.2),
-    FlSpot(2, 2.75),
-    FlSpot(3, 2.2),
-    FlSpot(4, 3.5),
-    FlSpot(5, 2.75),
-    FlSpot(6, 4.5),
+  dynamic graphData = <GraphData>[
+    GraphData('Mon', 1),
+    GraphData('Tue', 2.3),
+    GraphData('Wen', 1.75),
+    GraphData('Thu', 3),
+    GraphData('Fri', 4.2),
+    GraphData('Sat', 3.7),
+    GraphData('Sun', 4.7),
   ];
 
-  List<Color> gradientColors = [
-    const Color(0xff8c52ff),
-    const Color(0xff8c52ff),
-  ];
+  TextStyle headerTextStyle = TextStyle(
+      color: Color(0xFFCCCCCC),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      fontFamily: "TTCommon");
+
+  TextStyle valueTextStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 21,
+      fontWeight: FontWeight.w600,
+      fontFamily: "TTCommon");
 
   final value = new NumberFormat("#,##0", "en_US");
 
@@ -63,6 +67,7 @@ class _MainPageState extends State<AffiliateStatistics> {
               children: [
                 Row(
                   children: [
+                    //! NavBar
                     Container(
                       margin: EdgeInsets.only(
                           left: 24.5,
@@ -113,26 +118,26 @@ class _MainPageState extends State<AffiliateStatistics> {
                         ),
                         child: Column(
                           children: [
-                            Text(
-                              "New user registered with your code",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xFFCCCCCC),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "TTCommon"),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 9),
-                              child: Text(
-                                "${value.format(NewRegistered)}",
+                            Text("New user registered with your code",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "TTCommon"),
-                              ),
+                                style: headerTextStyle),
+                            FutureBuilder(
+                              future: _databaseMethods.GetNewRegistered(
+                                  Constants.myName),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return Container(
+                                    margin: EdgeInsets.only(top: 9),
+                                    child: Text(
+                                        "${value.format(snapshot.data)}",
+                                        textAlign: TextAlign.center,
+                                        style: valueTextStyle),
+                                  );
+                                } else {
+                                  return loadingWidget();
+                                }
+                              },
                             ),
                           ],
                         ),
@@ -156,26 +161,26 @@ class _MainPageState extends State<AffiliateStatistics> {
                         ),
                         child: Column(
                           children: [
-                            Text(
-                              "Users used your code",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xFFCCCCCC),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "TTCommon"),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 9),
-                              child: Text(
-                                "${value.format(UsedCode)}",
+                            Text("Users used your code",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "TTCommon"),
-                              ),
+                                style: headerTextStyle),
+                            FutureBuilder(
+                              future: _databaseMethods.GetUsedCode(
+                                  Constants.myName),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return Container(
+                                    margin: EdgeInsets.only(top: 9),
+                                    child: Text(
+                                        "${value.format(snapshot.data)}",
+                                        textAlign: TextAlign.center,
+                                        style: valueTextStyle),
+                                  );
+                                } else {
+                                  return loadingWidget();
+                                }
+                              },
                             ),
                           ],
                         ),
@@ -199,25 +204,25 @@ class _MainPageState extends State<AffiliateStatistics> {
                         ),
                         child: Column(
                           children: [
-                            Text(
-                              "Average ads shown to them",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color(0xFFCCCCCC),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "TTCommon"),
-                            ),
+                            Text("Average ads shown to them",
+                                textAlign: TextAlign.center,
+                                style: headerTextStyle),
                             Container(
                               margin: EdgeInsets.only(top: 9),
-                              child: Text(
-                                "${value.format(AverageAds)}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "TTCommon"),
+                              child: FutureBuilder(
+                                future: _databaseMethods.GetAverageAds(
+                                    Constants.myName),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return Text(
+                                        "${value.format(snapshot.data)}",
+                                        textAlign: TextAlign.center,
+                                        style: valueTextStyle);
+                                  } else {
+                                    return loadingWidget();
+                                  }
+                                },
                               ),
                             ),
                           ],
@@ -234,37 +239,60 @@ class _MainPageState extends State<AffiliateStatistics> {
                         border: Border.all(width: 2, color: Color(0xFF181d53)),
                         color: Color(0xFF12185F),
                       ),
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 15, top: 12),
-                            child: Text(
-                              "Analytics",
-                              style: TextStyle(
-                                  color: Color(0xFFCCCCCC),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "TTCommon"),
-                            ),
-                          ),
-                          AspectRatio(
-                            aspectRatio: 1.7,
-                            child: Container(
-                              margin:
-                                  EdgeInsets.only(right: 20, left: 10, top: 22),
-                              /*
-                                decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(18),
-                                    ),
-                                    color: Color(0xff232d37)), */
-                              child: LineChart(
-                                mainData(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: FutureBuilder(
+                          future:
+                              _databaseMethods.GetAnalytics(Constants.myName),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return SfCartesianChart(
+                                tooltipBehavior: _tooltipBehavior,
+                                title: ChartTitle(
+                                    text: "Analytics",
+                                    textStyle: TextStyle(
+                                        color: Color(0xFFCCCCCC),
+                                        fontSize: 11)),
+                                plotAreaBorderColor: Colors.transparent,
+                                plotAreaBackgroundColor: Colors.transparent,
+                                // Initialize category axis
+                                primaryXAxis: CategoryAxis(
+                                  majorGridLines: MajorGridLines(
+                                    width: 0,
+                                  ),
+                                ),
+                                //primaryYAxis: CategoryAxis(),
+                                series: <ChartSeries<GraphData, String>>[
+                                  SplineSeries<GraphData, String>(
+                                      name: "Ads Watched Analytics",
+                                      color: Color(0xff8c52ff),
+                                      // Bind data source
+                                      dataSource: <GraphData>[
+                                        GraphData('Mon',
+                                            snapshot.data["mon"].toDouble()),
+                                        GraphData('Tue',
+                                            snapshot.data["tue"].toDouble()),
+                                        GraphData('Wen',
+                                            snapshot.data["wen"].toDouble()),
+                                        GraphData('Thu',
+                                            snapshot.data["thu"].toDouble()),
+                                        GraphData('Fri',
+                                            snapshot.data["fri"].toDouble()),
+                                        GraphData('Sat',
+                                            snapshot.data["sat"].toDouble()),
+                                        GraphData('Sun',
+                                            snapshot.data["sun"].toDouble()),
+                                      ],
+                                      xValueMapper: (GraphData amount, _) =>
+                                          amount.day,
+                                      yValueMapper: (GraphData amount, _) =>
+                                          amount.amount,
+                                      enableTooltip: true)
+                                ],
+                              );
+                            } else {
+                              return loadingWidget();
+                            }
+                          }),
                     ),
 
                     Stack(
@@ -289,26 +317,31 @@ class _MainPageState extends State<AffiliateStatistics> {
                             children: [
                               Column(
                                 children: [
-                                  Text(
-                                    "Your Balance",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Color(0xFFCCCCCC),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "TTCommon"),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 4),
-                                    child: Text(
-                                      "\$${value.format(Balance)}",
+                                  Text("Your Balance",
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 21,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "TTCommon"),
-                                    ),
+                                      style: headerTextStyle),
+                                  FutureBuilder(
+                                    future: _databaseMethods.GetBalance(
+                                        Constants.myName),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return Container(
+                                          margin: EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            "\$${value.format(snapshot.data)}",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 21,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: "TTCommon"),
+                                          ),
+                                        );
+                                      } else {
+                                        return loadingWidget();
+                                      }
+                                    },
                                   ),
                                 ],
                               ),
@@ -363,107 +396,17 @@ class _MainPageState extends State<AffiliateStatistics> {
     );
   }
 
-  LineChartData mainData() {
-    return LineChartData(
-      gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            strokeWidth: 0,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: SideTitles(showTitles: false),
-        topTitles: SideTitles(showTitles: false),
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 18,
-          interval: 1,
-          getTextStyles: (context, value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 13),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 0:
-                return 'Mon';
-              case 1:
-                return 'Tue';
-              case 2:
-                return 'Wen';
-              case 3:
-                return 'Thu';
-              case 4:
-                return 'Fri';
-              case 5:
-                return 'Sat';
-              case 6:
-                return 'Sun';
-            }
-            return '';
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          interval: 1,
-          getTextStyles: (context, value) => const TextStyle(
-            color: Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 0:
-                return '<1k';
-              case 1:
-                return '1k';
-              case 2:
-                return '2k';
-              case 3:
-                return '3k';
-              case 4:
-                return '4k';
-              case 5:
-                return '5k';
-            }
-            return '';
-          },
-          reservedSize: 25,
-          margin: 12,
-        ),
-      ),
-      borderData: FlBorderData(show: true, border: Border.all(width: 0)),
-      minX: 0,
-      maxX: 6,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: graphData,
-          isCurved: true,
-          colors: gradientColors,
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.17)).toList(),
-          ),
-        ),
-      ],
+  Widget loadingWidget() {
+    return Container(
+      margin: EdgeInsets.only(top: 4),
+      child: Text("Loading...",
+          textAlign: TextAlign.center, style: valueTextStyle),
     );
   }
+}
+
+class GraphData {
+  GraphData(this.day, this.amount);
+  final String day;
+  final double amount;
 }

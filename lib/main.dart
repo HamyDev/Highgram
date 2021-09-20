@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
                 Center(
                   child: Container(
                     margin: EdgeInsets.only(bottom: 15),
-                    width: 128,
-                    height: 128,
+                    width: 100,
+                    height: 100,
                     child: Image.asset('assets/images/HighGramRound.png'),
                   ),
                 ),
